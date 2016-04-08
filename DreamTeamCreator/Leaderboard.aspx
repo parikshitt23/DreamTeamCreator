@@ -3,4 +3,8 @@
     <div>
         <asp:GridView ID="leaderBoardGridView" runat="server"> </asp:GridView>
     </div>
+    <div>
+
+    </div>
+        
 </asp:Content>
