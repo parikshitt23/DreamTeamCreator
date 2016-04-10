@@ -121,6 +121,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AnonUsers\Bowlers.aspx" />
     <Content Include="DreamTeamCreator.aspx" />
     <Content Include="packages.config" />
     <Content Include="Site1.Master" />
@@ -181,6 +182,13 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnonUsers\Bowlers.aspx.cs">
+      <DependentUpon>Bowlers.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AnonUsers\Bowlers.aspx.designer.cs">
+      <DependentUpon>Bowlers.aspx</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.cs" />
