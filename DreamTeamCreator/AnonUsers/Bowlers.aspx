@@ -31,18 +31,13 @@
     <td>
         <asp:DropDownList ID="EconomyDrop" runat="server" OnSelectedIndexChanged="EconomySelect">
             <asp:ListItem Text="Select Range.."  Value="0" Selected="True"></asp:ListItem>
-            <asp:ListItem>&lt;4.5</asp:ListItem>
-            <asp:ListItem>&gt;=4.5 and &lt;5</asp:ListItem>
-            <asp:ListItem>&gt;=5 and &lt;5.5</asp:ListItem>
-            <asp:ListItem>&gt;=5.5 and &lt;6</asp:ListItem>
-            <asp:ListItem>&gt;=6 and &lt;6.5</asp:ListItem>
-            <asp:ListItem>&gt;=6.5 and &lt;7</asp:ListItem>
-            <asp:ListItem>&gt;=7 and &lt;7.5</asp:ListItem>
-            <asp:ListItem>&gt;=7.5 and &lt;8</asp:ListItem>
-            <asp:ListItem>&gt;=8 and &lt;8.5</asp:ListItem>
-            <asp:ListItem>&gt;=8.5 and &lt;9</asp:ListItem>
-            <asp:ListItem>&gt;=9 and &lt;9.5</asp:ListItem>
-            <asp:ListItem>&gt;=9.5 and &lt;10</asp:ListItem>
+            <asp:ListItem>&lt;4</asp:ListItem>
+            <asp:ListItem>&gt;=4 and &lt;5</asp:ListItem>
+            <asp:ListItem>&gt;=5 and &lt;6</asp:ListItem>
+            <asp:ListItem>&gt;=6 and &lt;7</asp:ListItem>
+            <asp:ListItem>&gt;=7 and &lt;8</asp:ListItem>
+            <asp:ListItem>&gt;=8 and &lt;9</asp:ListItem>
+            <asp:ListItem>&gt;=9 and &lt;10</asp:ListItem>
             <asp:ListItem>&gt;=10 and &lt;11</asp:ListItem>
             <asp:ListItem>&gt;=11 and &lt;15</asp:ListItem>
             <asp:ListItem>&gt;=15 and &lt;20</asp:ListItem>
