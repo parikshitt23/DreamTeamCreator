@@ -6,7 +6,7 @@
 <tr>
     <td>Team:</td>
     <td>
-        <asp:DropDownList ID="DropTeam" runat="server" OnSelectedIndexChanged="DropTeamSelect">
+        <asp:DropDownList ID="DropTeam" runat="server">
             <asp:ListItem Text="Select Team.."  Value="0" Selected="True"></asp:ListItem>
             <asp:ListItem Text="Chennai Super Kings"  Value="1"></asp:ListItem>
             <asp:ListItem Text="Deccan Chargers"  Value="2"></asp:ListItem>
@@ -29,7 +29,7 @@
 <tr>
     <td>Economy Range:</td>
     <td>
-        <asp:DropDownList ID="EconomyDrop" runat="server" OnSelectedIndexChanged="EconomySelect">
+        <asp:DropDownList ID="EconomyDrop" runat="server">
             <asp:ListItem Text="Select Range.."  Value="0" Selected="True"></asp:ListItem>
             <asp:ListItem>&lt;4</asp:ListItem>
             <asp:ListItem>&gt;=4 and &lt;5</asp:ListItem>
@@ -46,7 +46,7 @@
     </td>
     <td>Wickets Taken:</td>
     <td>
-        <asp:DropDownList ID="Wickets_Taken" runat="server" OnSelectedIndexChanged="WicketsSelect">
+        <asp:DropDownList ID="Wickets_Taken" runat="server">
             <asp:ListItem Text="Select Range.."  Value="0" Selected="True"></asp:ListItem>
             <asp:ListItem>&lt;5</asp:ListItem>
             <asp:ListItem>&gt;=5 and &lt;10</asp:ListItem>
