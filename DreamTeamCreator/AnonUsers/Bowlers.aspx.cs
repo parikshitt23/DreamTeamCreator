@@ -23,7 +23,7 @@ namespace DreamTeamCreator.AnonUsers
             OracleConnection con = new OracleConnection(oracleConnectionString);
             try
             {
-                string query = QueryBuilderClass.BatsmanQueryBuilder(DropTeam, EconomyDrop, Wickets_Taken, Name);
+                string query = QueryBuilderClass.BowlerQueryBuilder(DropTeam, EconomyDrop, Wickets_Taken, Name);
                 OracleCommand cmd = new OracleCommand(query, con);
                 con.Open();
                 OracleDataReader rdr = cmd.ExecuteReader();

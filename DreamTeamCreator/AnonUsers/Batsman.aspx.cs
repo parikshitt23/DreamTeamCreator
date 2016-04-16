@@ -16,19 +16,23 @@ namespace DreamTeamCreator.AnonUsers
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+           
+        }
+
+        protected void BatsmanSearch_Click(object sender, EventArgs e)
+        {
             string oracleConnectionString = ConfigurationManager.ConnectionStrings["OracleConnection"].ConnectionString;
             OracleConnection con = new OracleConnection(oracleConnectionString);
             try
             {
-                string query = "SELECT TEAM_ID, TEAMS FROM TEAM_IDS";
+                string query = QueryBuilderClass.BatsmanQueryBuilder(BattingTeamNameDropDown, BattingAverageDropDown, BattingStrikeRateDropDown, BatsmanNameTextBox, HalfCenturyCheckBox, CenturyCheckbox);
                 OracleCommand cmd = new OracleCommand(query, con);
                 con.Open();
-                DropDownList1.DataSource = cmd.ExecuteReader();
-                DropDownList1.DataTextField = "TEAMS";
-                DropDownList1.DataValueField = "TEAM_ID";
-                DropDownList1.DataBind();
+                OracleDataReader rdr = cmd.ExecuteReader();
+                BatsmanSearchResult.DataSource = rdr;
+                BatsmanSearchResult.DataBind();
             }
-            catch(OracleException ex)
+            catch (OracleException ex)
             {
                 Response.Write("<br>/" + "<br>/" + "<br>/" + "<br>/" + "<br>/" + ex);
             }

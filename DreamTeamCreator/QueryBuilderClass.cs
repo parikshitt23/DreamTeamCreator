@@ -23,30 +23,16 @@ namespace DreamTeamCreator
             return "";
         }
 
-        public static string EconomySelect(DropDownList EconomyDrop)
+        public static string DropDownSelect(DropDownList DropDown)
         {
-            if (!EconomyDrop.SelectedValue.Equals('0'))
+            if (!DropDown.SelectedValue.Equals("0"))
             {
-                return  EconomyDrop.Text;
+                return DropDown.Text;
             }
-            //select distinct season, bowler, cast((sum(run_scored) / (count(*) / 6)) as numeric(15, 2)) as economy
-            //from ball_by_ball
-            //group by season, bowler
             return "";
         }
 
-        public static string WicketsSelect(DropDownList Wickets_Taken)
-        {
-            if (!Wickets_Taken.SelectedValue.Equals('0'))
-            {
-               return  Wickets_Taken.Text;
-            }
-            //select distinct season, bowler,count(*) as wickets_taken
-            //from ball_by_ball
-            //where out_decision <> '*'
-            //group by season, bowler
-            return "";
-        }
+     
 
         //if return of below funtion is single digit, check the 1st character of input string to see if its the lower limit or the upper limit
         public static List<int> split_input_range(string input)
@@ -65,7 +51,7 @@ namespace DreamTeamCreator
             return range;
         }
 
-        public static string BatsmanQueryBuilder(DropDownList DropTeam, DropDownList EconomyDrop, DropDownList Wickets_Taken, TextBox Name) {
+        public static string BowlerQueryBuilder(DropDownList DropTeam, DropDownList EconomyDrop, DropDownList Wickets_Taken, TextBox Name) {
             List<String> conditions = new List<string>();
 
             string master_q = "";
@@ -74,8 +60,8 @@ namespace DreamTeamCreator
             string wickets_f = "";
             string player_f = ""; //data filtering conditions
 
-            string econrange = EconomySelect(EconomyDrop);
-            string wicketsrange = WicketsSelect(Wickets_Taken);
+            string econrange = DropDownSelect(EconomyDrop);
+            string wicketsrange = DropDownSelect(Wickets_Taken);
             
 
             master_q = "select * from (select distinct season,bowler,sum(wickets_taken) wickets_taken,sum(economy) economy from (select distinct season, bowler, 0 as wickets_taken, cast((sum(run_scored) / (count(*) / 6)) as numeric(15, 2)) as economy from ball_by_ball where season <> '2015' group by season, bowler union all select distinct season, bowler, count(*) as wickets_taken, 0 as economy from ball_by_ball where out_decision <> '*' and season <> '2015' group by season, bowler) A group by A.season,A.bowler) all_data";
@@ -130,6 +116,75 @@ namespace DreamTeamCreator
             }
 
             return search_q;
+
+        }
+
+        public static string BatsmanQueryBuilder(DropDownList BattingTeamNameDropDown, DropDownList BattingAverageDropDown, DropDownList BattingStrikeRateDropDown, TextBox BatsmanNameTextBox, CheckBox HalfCenturyCheckBox, CheckBox CenturyCheckbox) {
+            List<String> conditions = new List<string>();
+
+            string master_q = "";
+            string search_q = "";
+            string average_f = "";
+            string striker_rate_f = "";
+            string player_f = ""; //data filtering conditions
+
+            master_q = "SELECT * FROM(SELECT DISTINCT SEASON, STRIKE_BAT, SUM(AVERAGE) AS AVERAGE, SUM(SR) AS SR FROM (SELECT DISTINCT SEASON, B3.STRIKE_BAT, AVERAGE, 0 AS SR FROM(SELECT B.STRIKE_BAT, ROUND(RUNS / OUTS, 1) AS AVERAGE FROM(SELECT STRIKE_BAT, COUNT(OUT_DECISION)AS OUTS FROM BALL_BY_BALL WHERE BALL_BY_BALL.OUT_DECISION != '*' GROUP BY STRIKE_BAT) B1, (SELECT STRIKE_BAT, SUM(RUN_SCORED)AS RUNS FROM BALL_BY_BALL  group by STRIKE_BAT) B WHERE B1.STRIKE_BAT = B.STRIKE_BAT) B2, BALL_BY_BALL B3 WHERE B2.STRIKE_BAT = B3.STRIKE_BAT UNION ALL SELECT DISTINCT SEASON, B3.STRIKE_BAT, 0 AS AVERAGE, SR FROM(SELECT B.STRIKE_BAT, CAST(RUNS / OUTS * 100 AS INTEGER) AS SR FROM(SELECT STRIKE_BAT, COUNT(OUT_DECISION)AS OUTS FROM BALL_BY_BALL WHERE OUT_DECISION = '*' GROUP BY STRIKE_BAT) B1, (SELECT STRIKE_BAT, SUM(RUN_SCORED)AS RUNS FROM BALL_BY_BALL  group by STRIKE_BAT) B WHERE B1.STRIKE_BAT = B.STRIKE_BAT) B2, BALL_BY_BALL B3 WHERE B2.STRIKE_BAT = B3.STRIKE_BAT) A GROUP BY A.SEASON, A.STRIKE_BAT) ALL_DATA";
+
+            string averageRange = DropDownSelect(BattingAverageDropDown);
+            string strikeRateRange = DropDownSelect(BattingStrikeRateDropDown);
+
+
+            if (!string.IsNullOrWhiteSpace(BatsmanNameTextBox.Text))
+            {
+                player_f = "STRIKE_BAT like '%" + BatsmanNameTextBox.Text + "%' ";
+                conditions.Add(player_f);
+            }
+
+            if (!string.IsNullOrEmpty(averageRange))
+            {
+                //int high,low;
+                List<int> range = split_input_range(averageRange);
+                if (range.ToArray().Length == 1)
+                {
+                    average_f = "AVERAGE " + averageRange + " ";
+                }
+                else
+                {
+                    average_f = "AVERAGE >=" + range[0] + " and AVERAGE < " + range[1] + " ";
+                }
+                conditions.Add(average_f);
+            }
+
+            if (!string.IsNullOrEmpty(strikeRateRange))
+            {
+                //int high,low;
+                List<int> range = split_input_range(strikeRateRange);
+                if (range.ToArray().Length == 1)
+                {
+                    striker_rate_f = "SR " + strikeRateRange + " ";
+                }
+                else
+                {
+                    striker_rate_f = "SR >=" + range[0] + " and SR < " + range[1] + " ";
+                }
+                conditions.Add(striker_rate_f);
+            }
+
+            search_q = master_q;
+            for (int k = 0; k < conditions.ToArray().Length; k++)
+            {
+                if (k == 0)
+                {
+                    search_q += " where " + conditions[k];
+                }
+                else
+                {
+                    search_q += " and " + conditions[k];
+                }
+            }
+
+            return search_q;
+
 
         }
 
