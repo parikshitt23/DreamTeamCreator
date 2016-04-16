@@ -91,7 +91,7 @@ namespace DreamTeamCreator.AnonUsers
             master_q = "select * from (select distinct season,bowler,sum(wickets_taken) wickets_taken,sum(economy) economy from (select distinct season, bowler, 0 as wickets_taken, cast((sum(run_scored) / (count(*) / 6)) as numeric(15, 2)) as economy from ball_by_ball where season <> '2015' group by season, bowler union all select distinct season, bowler, count(*) as wickets_taken, 0 as economy from ball_by_ball where out_decision <> '*' and season <> '2015' group by season, bowler) A group by A.season,A.bowler) all_data";
 
             if (!string.IsNullOrWhiteSpace(Name.Text)){
-                player_f = "bowler='" + Name.Text + "' ";
+                player_f = "bowler like '%" + Name.Text + "%' ";
                 conditions.Add(player_f);
             }
 
@@ -130,8 +130,10 @@ namespace DreamTeamCreator.AnonUsers
                 {
                     search_q += " where " + conditions[k];
                 }
-
-                search_q += " and " + conditions[k];
+                else
+                {
+                    search_q += " and " + conditions[k];
+                }                
             }
 
             string oracleConnectionString = ConfigurationManager.ConnectionStrings["OracleConnection"].ConnectionString;
