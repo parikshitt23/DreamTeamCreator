@@ -62,5 +62,9 @@
 </tr>
 </table>
     <br />
-    <asp:GridView ID="BowlerSearchRes" runat="server"></asp:GridView>
+    <asp:GridView ID="BowlerSearchRes" runat="server" OnSelectedIndexChanged="BowlerSearchRes_SelectedIndexChanged" OnRowCommand="BowlerSearchRes_RowCommand">
+        <Columns>
+            <asp:ButtonField CommandName="Details" Text="View Details" ButtonType="Button" ShowHeader="True" HeaderText="View Details" ></asp:ButtonField>
+        </Columns>
+    </asp:GridView>
 </asp:Content>

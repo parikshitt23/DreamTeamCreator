@@ -121,6 +121,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AnonUsers\BowlerDetails.aspx" />
     <Content Include="AnonUsers\Bowlers.aspx" />
     <Content Include="AnonUsers\Batsman.aspx" />
     <Content Include="DreamTeamCreator.aspx" />
@@ -183,6 +184,13 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnonUsers\BowlerDetails.aspx.cs">
+      <DependentUpon>BowlerDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AnonUsers\BowlerDetails.aspx.designer.cs">
+      <DependentUpon>BowlerDetails.aspx</DependentUpon>
+    </Compile>
     <Compile Include="AnonUsers\Bowlers.aspx.cs">
       <DependentUpon>Bowlers.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
