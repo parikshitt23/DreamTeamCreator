@@ -53,18 +53,25 @@ namespace DreamTeamCreator
 
         public static string BowlerQueryBuilder(DropDownList DropTeam, DropDownList EconomyDrop, DropDownList Wickets_Taken, TextBox Name) {
             List<String> conditions = new List<string>();
-
+            
             string master_q = "";
             string search_q = "";
+            string team_f = "";
             string econ_f = "";
             string wickets_f = "";
-            string player_f = ""; //data filtering conditions
+            string player_f = "";//data filtering conditions
 
             string econrange = DropDownSelect(EconomyDrop);
             string wicketsrange = DropDownSelect(Wickets_Taken);
-            
+            string selectedTeam = DropDownSelect(DropTeam);
 
-            master_q = "select * from (select distinct season,bowler,sum(wickets_taken) wickets_taken,sum(economy) economy from (select distinct season, bowler, 0 as wickets_taken, cast((sum(run_scored) / (count(*) / 6)) as numeric(15, 2)) as economy from ball_by_ball where season <> '2015' group by season, bowler union all select distinct season, bowler, count(*) as wickets_taken, 0 as economy from ball_by_ball where out_decision <> '*' and season <> '2015' group by season, bowler) A group by A.season,A.bowler) all_data";
+            master_q = "select season,bowler,wickets_taken,economy from ( select distinct C.team_id,A.season,A.bowler,sum(wickets_taken) wickets_taken,sum(economy) economy from (select distinct season, bowler, 0 as wickets_taken, cast((sum(run_scored) / (count(*) / 6)) as numeric(15, 2)) as economy from ball_by_ball where season <> '2015' group by season, bowler union all select distinct season, bowler, count(*) as wickets_taken, 0 as economy from ball_by_ball where out_decision <> '*' and season <> '2015' group by season, bowler) A inner join (select * from PLAYER_IDS where player_id<>'372') B on A.bowler=B.PLAYERNAME inner join team_players_map C on B.PLAYER_ID=c.player_id and C.season=A.season group by A.season,A.bowler,C.team_id) all_data";
+
+            if (!string.IsNullOrEmpty(selectedTeam))
+            {
+                team_f = "team_id =" + selectedTeam + "";
+                conditions.Add(team_f);
+            }
 
             if (!string.IsNullOrWhiteSpace(Name.Text))
             {
