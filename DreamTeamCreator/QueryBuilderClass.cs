@@ -65,7 +65,7 @@ namespace DreamTeamCreator
             string wicketsrange = DropDownSelect(Wickets_Taken);
             string selectedTeam = DropDownSelect(DropTeam);
 
-            master_q = "select season,bowler,wickets_taken,economy from ( select distinct C.team_id,A.season,A.bowler,sum(wickets_taken) wickets_taken,sum(economy) economy from (select distinct season, bowler, 0 as wickets_taken, cast((sum(run_scored) / (count(*) / 6)) as numeric(15, 2)) as economy from ball_by_ball where season <> '2015' group by season, bowler union all select distinct season, bowler, count(*) as wickets_taken, 0 as economy from ball_by_ball where out_decision <> '*' and season <> '2015' group by season, bowler) A inner join (select * from PLAYER_IDS where player_id<>'372') B on A.bowler=B.PLAYERNAME inner join team_players_map C on B.PLAYER_ID=c.player_id and C.season=A.season group by A.season,A.bowler,C.team_id) all_data";
+            master_q = "select season as Season,bowler as Bowler,wickets_taken as Wickets_Taken,economy as Economy from ( select distinct C.team_id,A.season,A.bowler,sum(wickets_taken) wickets_taken,sum(economy) economy from (select distinct season, bowler, 0 as wickets_taken, cast((sum(run_scored) / (count(*) / 6)) as numeric(15, 2)) as economy from ball_by_ball where season <> '2015' group by season, bowler union all select distinct season, bowler, count(*) as wickets_taken, 0 as economy from ball_by_ball where out_decision <> '*' and season <> '2015' group by season, bowler) A inner join (select * from PLAYER_IDS where player_id<>'372') B on A.bowler=B.PLAYERNAME inner join team_players_map C on B.PLAYER_ID=c.player_id and C.season=A.season group by A.season,A.bowler,C.team_id) all_data";
 
             if (!string.IsNullOrEmpty(selectedTeam))
             {
@@ -110,17 +110,24 @@ namespace DreamTeamCreator
             }
 
             search_q = master_q;
-            for (int k = 0; k < conditions.ToArray().Length; k++)
+            if (conditions.ToArray().Length != 0)
             {
-                if (k == 0)
+                for (int k = 0; k < conditions.ToArray().Length; k++)
                 {
-                    search_q += " where " + conditions[k];
-                }
-                else
-                {
-                    search_q += " and " + conditions[k];
+                    if (k == 0)
+                    {
+                        search_q += " where " + conditions[k];
+                    }
+                    else
+                    {
+                        search_q += " and " + conditions[k];
+                    }
                 }
             }
+            else {
+                search_q += " ORDER BY WICKETS_TAKEN DESC, ECONOMY DESC";
+            }
+            
 
             return search_q;
 
@@ -131,15 +138,22 @@ namespace DreamTeamCreator
 
             string master_q = "";
             string search_q = "";
+            string team_f = "";
             string average_f = "";
             string striker_rate_f = "";
             string player_f = ""; //data filtering conditions
 
-            master_q = "SELECT * FROM (SELECT DISTINCT SEASON,STRIKE_BAT,SUM(AVG) AVG,SUM(SR) SR FROM (SELECT DISTINCT A.SEASON, A.STRIKE_BAT, CAST(RUNS / OUTS AS NUMBER(15, 2)) AS AVG, 0 AS SR FROM (SELECT DISTINCT SEASON, STRIKE_BAT, SUM(RUN_SCORED) AS runs FROM NIGUPTA.BALL_BY_BALL WHERE SEASON <> '2015' GROUP BY STRIKE_BAT, SEASON) A inner join (SELECT DISTINCT SEASON, STRIKE_BAT, count(*) AS outs FROM NIGUPTA.BALL_BY_BALL WHERE SEASON <> '2015' and out_decision <> '*' GROUP BY STRIKE_BAT, SEASON) B ON A.SEASON = B.SEASON AND A.STRIKE_BAT = B.STRIKE_BAT UNION ALL SELECT DISTINCT SEASON, STRIKE_BAT, 0 AS AVG, CAST(SUM(RUN_SCORED) / COUNT(*) AS NUMBER(15, 4)) * 100 AS SR FROM NIGUPTA.BALL_BY_BALL WHERE SEASON <> '2015' GROUP BY STRIKE_BAT, SEASON) Data1 GROUP BY STRIKE_BAT, SEASON) ALL_DATA";
+            master_q = "SELECT season as Season,strike_bat as Strike_Batsman,avg as Average,sr as Strike_Rate FROM (SELECT DISTINCT C.team_id,DATA1.SEASON,DATA1.STRIKE_BAT,SUM(AVG) AVG,SUM(SR) SR FROM (SELECT DISTINCT A.SEASON, A.STRIKE_BAT, CAST(RUNS / OUTS AS NUMBER(15, 2)) AS AVG, 0 AS SR FROM (SELECT DISTINCT SEASON, STRIKE_BAT, SUM(RUN_SCORED) AS runs FROM NIGUPTA.BALL_BY_BALL WHERE SEASON <> '2015' GROUP BY STRIKE_BAT, SEASON) A inner join (SELECT DISTINCT SEASON, STRIKE_BAT, count(*) AS outs FROM NIGUPTA.BALL_BY_BALL WHERE SEASON <> '2015' and out_decision <> '*' GROUP BY STRIKE_BAT, SEASON) B ON A.SEASON = B.SEASON AND A.STRIKE_BAT = B.STRIKE_BAT UNION ALL SELECT DISTINCT SEASON, STRIKE_BAT, 0 AS AVG, CAST(SUM(RUN_SCORED) / COUNT(*) AS NUMBER(15, 4)) * 100 AS SR FROM NIGUPTA.BALL_BY_BALL WHERE SEASON <> '2015' GROUP BY STRIKE_BAT, SEASON) Data1 inner join PLAYER_IDS B on Data1.STRIKE_BAT=B.PLAYERNAME inner join team_players_map C on B.PLAYER_ID=c.player_id and C.season=DATA1.season GROUP BY DATA1.STRIKE_BAT,DATA1.SEASON,C.TEAM_ID) ALL_DATA";
 
             string averageRange = DropDownSelect(BattingAverageDropDown);
             string strikeRateRange = DropDownSelect(BattingStrikeRateDropDown);
+            string selectedTeam = DropDownSelect(BattingTeamNameDropDown);
 
+            if (!string.IsNullOrEmpty(selectedTeam))
+            {
+                team_f = "team_id =" + selectedTeam + "";
+                conditions.Add(team_f);
+            }
 
             if (!string.IsNullOrWhiteSpace(BatsmanNameTextBox.Text))
             {
@@ -178,17 +192,23 @@ namespace DreamTeamCreator
             }
 
             search_q = master_q;
-            for (int k = 0; k < conditions.ToArray().Length; k++)
+            if (conditions.ToArray().Length != 0)
             {
-                if (k == 0)
+                for (int k = 0; k < conditions.ToArray().Length; k++)
                 {
-                    search_q += " where " + conditions[k];
-                }
-                else
-                {
-                    search_q += " and " + conditions[k];
+                    if (k == 0)
+                    {
+                        search_q += " where " + conditions[k];
+                    }
+                    else
+                    {
+                        search_q += " and " + conditions[k];
+                    }
                 }
             }
+            else {
+                search_q += " order by avg desc,sr desc";
+            }            
 
             return search_q;
 
