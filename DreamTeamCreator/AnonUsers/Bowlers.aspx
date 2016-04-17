@@ -1,6 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="Bowlers.aspx.cs" Inherits="DreamTeamCreator.AnonUsers.Bowlers"%>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-<br></br>
+    <br></br>
 <br></br>
 <table style="width: 100%;">
 <tr>
@@ -62,9 +62,16 @@
 </tr>
 </table>
     <br />
+    <asp:Button ID="Add" runat="server" Text="Add Player" OnClick="Add_Click"/>
+    <br />
     <asp:GridView ID="BowlerSearchRes" runat="server" OnSelectedIndexChanged="BowlerSearchRes_SelectedIndexChanged" OnRowCommand="BowlerSearchRes_RowCommand">
         <Columns>
             <asp:ButtonField CommandName="Details" Text="View Details" ButtonType="Button" ShowHeader="True" HeaderText="View Details" ></asp:ButtonField>
+             <asp:templatefield HeaderText="Select">
+                    <itemtemplate>
+                        <asp:checkbox ID="cbSelect" CssClass="gridCB"  runat="server"></asp:checkbox>
+                    </itemtemplate>
+           </asp:templatefield>
         </Columns>
     </asp:GridView>
 </asp:Content>

@@ -89,13 +89,27 @@ namespace DreamTeamCreator.AnonUsers
         {
             if (e.CommandName == "Details") {
 
-                string eb = BowlerSearchRes.SelectedRow.Cells[0].Text;
-                GridViewRowCollection row = BowlerSearchRes.Rows;
-                string ex = "";
+               
 
                 // var m_values = this.GetValues(row);
                 Response.Redirect("~/AnonUsers/BowlerDetails.aspx");
             }
+        }
+
+        protected void Add_Click(object sender, EventArgs e)
+        {
+
+            List<string> BowlerNames = new List<string>();
+            foreach (GridViewRow row in BowlerSearchRes.Rows)
+            {
+                CheckBox check = (CheckBox)row.FindControl("cbSelect");
+
+                if (check.Checked)
+                {
+                    BowlerNames.Add(row.Cells[3].Text);
+                }
+            }
+            List<string> BowlerNames1 = BowlerNames;
         }
     }
 }
