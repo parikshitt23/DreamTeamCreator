@@ -122,6 +122,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AnonUsers\Batsman.aspx" />
+    <Content Include="Content\StyleSheet1.css" />
     <Content Include="DreamTeamCreator.aspx" />
     <Content Include="packages.config" />
     <Content Include="Site1.Master" />
