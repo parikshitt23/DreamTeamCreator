@@ -211,8 +211,6 @@ namespace DreamTeamCreator
             }            
 
             return search_q;
-
-
         }
 
 
