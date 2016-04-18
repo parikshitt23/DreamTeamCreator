@@ -14,6 +14,8 @@ namespace DreamTeamCreator
 {
     public partial class DreamTeamCreator : System.Web.UI.Page
     {
+        string homeTeamString;
+        string awayTeamString;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Application["MatchNumber"] == null)
@@ -43,8 +45,11 @@ namespace DreamTeamCreator
                     con.Close();
                 }
 
-                string homeTeamString = NextMatchGridView.Rows[0].Cells[0].Text;
-                string awayTeamString = NextMatchGridView.Rows[0].Cells[2].Text;
+                 homeTeamString = NextMatchGridView.Rows[0].Cells[0].Text;
+                 awayTeamString = NextMatchGridView.Rows[0].Cells[2].Text;
+
+                Session["HomeTeam"] = homeTeamString;
+                Session["AwayTeam"] = awayTeamString;
 
                 try
                 {
@@ -140,6 +145,46 @@ namespace DreamTeamCreator
         protected void NextMatch_Click(object sender, EventArgs e)
         {
             Application["MatchNumber"] = (int)Application["MatchNumber"]+1;
+        }
+
+        protected void SimMatch_Click(object sender, EventArgs e)
+        {
+            string homeTeamString = (string)Session["HomeTeam"];
+            string awayTeamString = (string)Session["AwayTeam"];
+            string oracleConnectionString = ConfigurationManager.ConnectionStrings["OracleConnection"].ConnectionString;
+            OracleConnection con = new OracleConnection(oracleConnectionString);
+            try
+            {
+                OracleCommand cmd = new OracleCommand("spMatchSim_User", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                OracleTransaction transaction;
+
+                // string encryptedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(Password.Text, "SHA1");
+
+                OracleParameter hometeamParameter = new OracleParameter("TEAM_HOME", homeTeamString);
+                OracleParameter awayTeamParameter = new OracleParameter("TEAM_AWAY", awayTeamString);
+               
+
+
+
+                cmd.Parameters.Add(hometeamParameter);
+                cmd.Parameters.Add(awayTeamParameter);
+                
+
+                con.Open();
+                transaction = con.BeginTransaction();
+                cmd.ExecuteNonQuery();
+                transaction.Commit();
+                
+            }
+            catch (OracleException ex)
+            {
+                Response.Write("<br/><br/><br/><br/><br/>" + ex);
+            }
+            finally
+            {
+                con.Close();
+            }
         }
     }
 }

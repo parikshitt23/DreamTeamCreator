@@ -57,6 +57,8 @@ namespace DreamTeamCreator.AnonUsers
                 Session["UserId"] = user_id;
                 
 
+                
+
                 if (returnCode == 1)
                 {
                     FormsAuthentication.RedirectFromLoginPage(Email.Text, false);
