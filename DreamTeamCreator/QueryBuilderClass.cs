@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -188,6 +186,25 @@ namespace DreamTeamCreator
 
         }
 
+        public static string NextMatchQueryBuilder(int matchNumber) {
 
+            return "SELECT TEAM_HOME, 'VS' ,TEAM_AWAY FROM MATCH_LIST WHERE SEASON = '2015' AND MATCH_NO = "+ matchNumber;
+        }
+
+        public static string NextMatchPlayerSelectionQueryBuilder(string homeTeamString, string awayTeamString) {
+
+            return "SELECT PLAYERNAME , PLAYERROLE  FROM PLAYER_IDS WHERE PLAYER_ID IN (SELECT PLAYER_ID FROM TEAM_PLAYERS_MAP WHERE TEAM_ID IN (SELECT TEAM_ID FROM TEAM_IDS WHERE TEAMS = '" + homeTeamString + "' OR TEAMS = '" + awayTeamString + "') AND SEASON = '2015')";
+        }
+
+        public static Dictionary<string, string> BowlerDetailsQueryBuilder(string bowlerName) {
+
+            Dictionary<string, string> bowlerDetailsQueryMap = new Dictionary<string, string>();
+            bowlerDetailsQueryMap.Add("boundariesAgainstQuery", "select * from (select batsman, bowler, sixes, fours, sixes + fours as total_boundaries from (select s.strike_bat as batsman, s.bowler as bowler, s.sixes as sixes, f.fours as fours from( select strike_bat, bowler, count(run_scored)as sixes  from ball_by_ball  where run_scored = '6' group by strike_bat, bowler) s, (select strike_bat, bowler, count(run_scored)as fours  from ball_by_ball where run_scored = '4' group by strike_bat, bowler) f where s.strike_bat = f.strike_bat and s.bowler = f.bowler) order by total_boundaries desc, sixes desc, fours desc) all_data where ROWNUM = 1 AND Bowler = '"+bowlerName+"'");
+            bowlerDetailsQueryMap.Add("wicketsRunsQuery", "select * from (select bowler, max(wickets) as wickets, min(runs_conceded) as runs_conceded from (select x.season as season, x.match_id as match_id, x.bowler as bowler, x.wickets as wickets, y.runs_conceded as runs_conceded from(select season, match_id, bowler, count(out_decision) as wickets from ball_by_ball where out_decision != '*' group by season, match_id, bowler) x, (select season, match_id, bowler, sum(run_scored) as runs_conceded from ball_by_ball group by season, match_id, bowler) y where x.season = y.season and x.match_id = y.match_id and x.bowler = y.bowler) group by bowler order by wickets desc, runs_conceded asc) all_data where Bowler = '" + bowlerName + "'");
+
+            
+
+            return bowlerDetailsQueryMap;
+        }
     }
 }

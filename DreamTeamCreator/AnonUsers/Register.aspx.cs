@@ -54,7 +54,7 @@ namespace DreamTeamCreator.AnonUsers
 
                 if (returnCode == 1)
                 {
-                    Response.Redirect("~/LoginUsers.aspx");
+                    Response.Redirect("~/Login.aspx");
 
                 }
                 else {

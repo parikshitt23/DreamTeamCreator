@@ -36,12 +36,14 @@ namespace DreamTeamCreator.AnonUsers
                 OracleParameter password = new OracleParameter("PASSWORD", Password.Text);
                 OracleParameter rv = new OracleParameter("RETURNVALUE", OracleDbType.Int32, ParameterDirection.Output);
                 OracleParameter userid = new OracleParameter("USERID", OracleDbType.Int32, ParameterDirection.Output);
+                
 
 
                 cmd.Parameters.Add(email);
                 cmd.Parameters.Add(password);
                 cmd.Parameters.Add(rv);
                 cmd.Parameters.Add(userid);
+                
 
                 con.Open();
                 transaction = con.BeginTransaction();
@@ -50,6 +52,10 @@ namespace DreamTeamCreator.AnonUsers
 
                 int returnCode = int.Parse(cmd.Parameters["RETURNVALUE"].Value.ToString());
                 int user_id = int.Parse(cmd.Parameters["USERID"].Value.ToString());
+                
+
+                Session["UserId"] = user_id;
+                
 
                 if (returnCode == 1)
                 {

@@ -85,17 +85,6 @@ namespace DreamTeamCreator.AnonUsers
             return values;
         }
 
-        protected void BowlerSearchRes_RowCommand(object sender, GridViewCommandEventArgs e)
-        {
-            if (e.CommandName == "Details") {
-
-               
-
-                // var m_values = this.GetValues(row);
-                Response.Redirect("~/AnonUsers/BowlerDetails.aspx");
-            }
-        }
-
         protected void Add_Click(object sender, EventArgs e)
         {
 
@@ -111,5 +100,14 @@ namespace DreamTeamCreator.AnonUsers
             }
             List<string> BowlerNames1 = BowlerNames;
         }
+
+        protected void ViewDetails_Click(object sender, EventArgs e)
+        {
+            Button viewDetailsButton = sender as Button;
+            int rowIndex = Convert.ToInt32(viewDetailsButton.Attributes["RowIndex"]);
+            string bowlerName = BowlerSearchRes.Rows[rowIndex].Cells[3].Text;
+            Session["BowlerName"] = bowlerName;
+            Response.Redirect("~/AnonUsers/BowlerDetails");
+         } 
     }
 }

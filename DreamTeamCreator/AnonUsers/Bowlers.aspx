@@ -64,9 +64,16 @@
     <br />
     <asp:Button ID="Add" runat="server" Text="Add Player" OnClick="Add_Click"/>
     <br />
-    <asp:GridView ID="BowlerSearchRes" runat="server" OnSelectedIndexChanged="BowlerSearchRes_SelectedIndexChanged" OnRowCommand="BowlerSearchRes_RowCommand">
+    <asp:GridView ID="BowlerSearchRes" runat="server" OnSelectedIndexChanged="BowlerSearchRes_SelectedIndexChanged">
         <Columns>
-            <asp:ButtonField CommandName="Details" Text="View Details" ButtonType="Button" ShowHeader="True" HeaderText="View Details" ></asp:ButtonField>
+            
+
+            <asp:templatefield HeaderText="View Details">
+                    <itemtemplate>
+                        <asp:Button ID="ViewDetails" runat="server" Text="View Details" OnClick="ViewDetails_Click" RowIndex="<%# Container.DisplayIndex %>" />
+                    </itemtemplate>
+           </asp:templatefield>
+
              <asp:templatefield HeaderText="Select">
                     <itemtemplate>
                         <asp:checkbox ID="cbSelect" CssClass="gridCB"  runat="server"></asp:checkbox>
