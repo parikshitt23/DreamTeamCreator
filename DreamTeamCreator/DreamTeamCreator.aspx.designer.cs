@@ -40,6 +40,15 @@ namespace DreamTeamCreator {
         protected global::System.Web.UI.WebControls.Button NextMatchButton;
         
         /// <summary>
+        /// PlayerPerformanceButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button PlayerPerformanceButton;
+        
+        /// <summary>
         /// PlayersGridView control.
         /// </summary>
         /// <remarks>
@@ -56,5 +65,14 @@ namespace DreamTeamCreator {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button SimMatch;
+        
+        /// <summary>
+        /// SelectedTeamGridView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView SelectedTeamGridView;
     }
 }

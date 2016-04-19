@@ -145,6 +145,7 @@ namespace DreamTeamCreator
         protected void NextMatch_Click(object sender, EventArgs e)
         {
             Application["MatchNumber"] = (int)Application["MatchNumber"]+1;
+            Response.Redirect("~/DreamTeamCreator");
         }
 
         protected void SimMatch_Click(object sender, EventArgs e)
@@ -185,6 +186,13 @@ namespace DreamTeamCreator
             {
                 con.Close();
             }
+
+            Response.Redirect("~/Leaderboard.aspx");
+        }
+
+        protected void PlayerPerformanceButton_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("~/AnonUsers/PerformingPlayers");
         }
     }
 }

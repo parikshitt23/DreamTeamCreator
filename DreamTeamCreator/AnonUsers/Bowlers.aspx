@@ -74,11 +74,7 @@
                     </itemtemplate>
            </asp:templatefield>
 
-             <asp:templatefield HeaderText="Select">
-                    <itemtemplate>
-                        <asp:checkbox ID="cbSelect" CssClass="gridCB"  runat="server"></asp:checkbox>
-                    </itemtemplate>
-           </asp:templatefield>
+          
         </Columns>
     </asp:GridView>
 </asp:Content>
