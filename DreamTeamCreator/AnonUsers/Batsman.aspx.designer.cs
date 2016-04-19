@@ -49,24 +49,6 @@ namespace DreamTeamCreator.AnonUsers {
         protected global::System.Web.UI.WebControls.DropDownList BattingStrikeRateDropDown;
         
         /// <summary>
-        /// HalfCenturyCheckBox control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox HalfCenturyCheckBox;
-        
-        /// <summary>
-        /// CenturyCheckbox control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox CenturyCheckbox;
-        
-        /// <summary>
         /// Submit control.
         /// </summary>
         /// <remarks>

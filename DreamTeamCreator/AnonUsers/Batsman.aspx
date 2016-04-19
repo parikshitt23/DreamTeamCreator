@@ -61,20 +61,16 @@
               </asp:DropDownList>
            </td>
        </tr>
-       <tr>
-           <td>
-               <asp:CheckBox ID="HalfCenturyCheckBox" runat="server" />Half Centuries
-           </td>
-           <td>
-           </td>
-           <td>
-           </td>
-           <td>
-               <asp:CheckBox ID="CenturyCheckbox" runat="server" />Full Centuries
-           </td>
-       </tr>
    </table>
     <asp:Button ID="Submit" runat="server" Text="Search" OnClick="BatsmanSearch_Click"/>
-    <asp:GridView ID="BatsmanSearchResult" runat="server"></asp:GridView>
+    <asp:GridView ID="BatsmanSearchResult" runat="server" OnSelectedIndexChanged="BatsmanSearchRes_SelectedIndexChanged">
+        <Columns>
+            <asp:templatefield HeaderText="View Details">
+                    <itemtemplate>
+                        <asp:Button ID="ViewDetails" runat="server" Text="View Details" OnClick="ViewDetails_Click" RowIndex="<%# Container.DisplayIndex %>" />
+                    </itemtemplate>
+           </asp:templatefield>
+        </Columns>
+    </asp:GridView>
         
 </asp:Content>
