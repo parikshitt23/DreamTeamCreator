@@ -28,9 +28,7 @@ namespace DreamTeamCreator
                 return DropDown.Text;
             }
             return "";
-        }
-
-     
+        } 
 
         //if return of below funtion is single digit, check the 1st character of input string to see if its the lower limit or the upper limit
         public static List<int> split_input_range(string input)
@@ -131,7 +129,7 @@ namespace DreamTeamCreator
 
         }
 
-        public static string BatsmanQueryBuilder(DropDownList BattingTeamNameDropDown, DropDownList BattingAverageDropDown, DropDownList BattingStrikeRateDropDown, TextBox BatsmanNameTextBox, CheckBox HalfCenturyCheckBox, CheckBox CenturyCheckbox) {
+        public static string BatsmanQueryBuilder(DropDownList BattingTeamNameDropDown, DropDownList BattingAverageDropDown, DropDownList BattingStrikeRateDropDown, TextBox BatsmanNameTextBox) {
             List<String> conditions = new List<string>();
 
             string master_q = "";
@@ -251,7 +249,20 @@ namespace DreamTeamCreator
             teamDetailsQueryMap.Add("highestRunsScored", "SELECT * FROM (SELECT SEASON, MATCH_NO, INN_NO, BATTING_TEAM, SUM(RUNS_SCORED) AS HIGHEST_TEAM_TOTALS FROM IPL_MASTER_DATA GROUP BY SEASON, MATCH_NO, INN_NO, BATTING_TEAM ORDER BY HIGHEST_TEAM_TOTALS DESC) ALL_DATA WHERE ROWNUM = 1 AND BATTING_TEAM = '" + teamName + "'");
             return teamDetailsQueryMap;
 
+        }
+        public static Dictionary<string, string> BatsmanDetailsQueryBuilder(string batsmanName)
+        {
 
+            Dictionary<string, string> batsmanDetailsQueryMap = new Dictionary<string, string>();
+            batsmanDetailsQueryMap.Add("batsmanWithMostDucks", "select * from (SELECT STRIKE_BAT BATSMAN, COUNT(*) NO_OF_DUCKS FROM( SELECT BALL_BY_BALL.SEASON, BALL_BY_BALL.MATCH_ID, BALL_BY_BALL.STRIKE_BAT, SUM(BALL_BY_BALL.RUN_SCORED) AS DUCKS FROM BALL_BY_BALL INNER JOIN(SELECT DISTINCT STRIKE_BAT FROM BALL_BY_BALL WHERE OUT_DECISION <> '*') A ON BALL_BY_BALL.STRIKE_BAT = A.STRIKE_BAT GROUP BY BALL_BY_BALL.SEASON, BALL_BY_BALL.MATCH_ID, BALL_BY_BALL.STRIKE_BAT HAVING SUM(BALL_BY_BALL.RUN_SCORED) = 0) WHERE STRIKE_BAT ='"+batsmanName+"' GROUP BY STRIKE_BAT ORDER BY NO_OF_DUCKS DESC)");
+            batsmanDetailsQueryMap.Add("batsmanCenturiesAndHalfCenturies", "select * from (SELECT X.BATSMAN, Y.NO_OF_100, X.NO_OF_50 FROM (SELECT STRIKE_BAT AS BATSMAN, COUNT(RUNS) AS NO_OF_50 FROM( SELECT SEASON, MATCH_ID, STRIKE_BAT, SUM(RUN_SCORED) AS RUNS FROM BALL_BY_BALL GROUP BY SEASON, MATCH_ID, STRIKE_BAT) WHERE RUNS >= 50 AND RUNS <= 99 GROUP BY STRIKE_BAT) X, (SELECT STRIKE_BAT AS BATSMAN, COUNT(RUNS) AS NO_OF_100 FROM(SELECT SEASON, MATCH_ID, STRIKE_BAT, SUM(RUN_SCORED) AS RUNS FROM BALL_BY_BALL GROUP BY SEASON, MATCH_ID, STRIKE_BAT)WHERE RUNS >= 100 GROUP BY STRIKE_BAT) Y WHERE X.BATSMAN = Y.BATSMAN AND X.BATSMAN='" + batsmanName + "' ORDER BY NO_OF_100 DESC, NO_OF_50 DESC)");
+            batsmanDetailsQueryMap.Add("batsmanHighestScore", "select * from (SELECT SEASON, STRIKE_BAT, SUM(RUN_SCORED) AS RUNS FROM BALL_BY_BALL WHERE STRIKE_BAT='"+batsmanName+"' GROUP BY SEASON, STRIKE_BAT ORDER BY RUNS DESC) WHERE ROWNUM=1");
+            batsmanDetailsQueryMap.Add("batsmanRunOuts", "select * from (SELECT STRIKE_BAT, COUNT(DISMISSAL) AS RUN_OUTS FROM IPL_MASTER_DATA WHERE STRIKE_BAT='" + batsmanName + "' AND DISMISSAL = 'run out' GROUP BY STRIKE_BAT ORDER BY RUN_OUTS DESC)");
+            batsmanDetailsQueryMap.Add("batsmanDismissal", "select * from ( SELECT BOWLER, STRIKE_BAT, dismissal FROM IPL_MASTER_DATA WHERE DISMISSAL = 'retired hurt' AND STRIKE_BAT='" + batsmanName + "')");
+            batsmanDetailsQueryMap.Add("MaximumBallsPlayedByBatsman", "select * from (SELECT SEASON, MATCH_NO, INN_NO, STRIKE_BAT, COUNT(*) AS BALLS_PLAYED FROM IPL_MASTER_DATA WHERE STRIKE_BAT='" + batsmanName + "' GROUP BY SEASON, MATCH_NO, INN_NO, STRIKE_BAT ORDER BY BALLS_PLAYED DESC) WHERE ROWNUM=1");
+            batsmanDetailsQueryMap.Add("batsmanMaximumFours", "select * from (SELECT SEASON, MATCH_NO, INN_NO, STRIKE_BAT, COUNT(*) AS NO_OF_4 FROM IPL_MASTER_DATA WHERE RUNS_SCORED = 4 AND STRIKE_BAT='" + batsmanName + "' GROUP BY SEASON, MATCH_NO, INN_NO, STRIKE_BAT ORDER BY NO_OF_4 DESC)WHERE ROWNUM=1");
+            batsmanDetailsQueryMap.Add("batsmanMaximumSixes", "select * from (SELECT SEASON, MATCH_NO, INN_NO, STRIKE_BAT, COUNT(*) AS NO_OF_6 FROM IPL_MASTER_DATA WHERE RUNS_SCORED = 6 AND STRIKE_BAT='" + batsmanName + "'GROUP BY SEASON, MATCH_NO, INN_NO, STRIKE_BAT ORDER BY NO_OF_6 DESC) WHERE ROWNUM=1");
+            return batsmanDetailsQueryMap;
         }
     }
 }

@@ -19,13 +19,17 @@ namespace DreamTeamCreator.AnonUsers
            
         }
 
+        protected void BatsmanSearchRes_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
         protected void BatsmanSearch_Click(object sender, EventArgs e)
         {
             string oracleConnectionString = ConfigurationManager.ConnectionStrings["OracleConnection"].ConnectionString;
             OracleConnection con = new OracleConnection(oracleConnectionString);
             try
             {
-                string query = QueryBuilderClass.BatsmanQueryBuilder(BattingTeamNameDropDown, BattingAverageDropDown, BattingStrikeRateDropDown, BatsmanNameTextBox, HalfCenturyCheckBox, CenturyCheckbox);
+                string query = QueryBuilderClass.BatsmanQueryBuilder(BattingTeamNameDropDown, BattingAverageDropDown, BattingStrikeRateDropDown, BatsmanNameTextBox);
                 OracleCommand cmd = new OracleCommand(query, con);
                 con.Open();
                 OracleDataReader rdr = cmd.ExecuteReader();
@@ -40,6 +44,14 @@ namespace DreamTeamCreator.AnonUsers
             {
                 con.Close();
             }
+        }
+        protected void ViewDetails_Click(object sender, EventArgs e)
+        {
+            Button viewDetailsButton = sender as Button;
+            int rowIndex = Convert.ToInt32(viewDetailsButton.Attributes["RowIndex"]);
+            string batsmanName = BatsmanSearchResult.Rows[rowIndex].Cells[2].Text;
+            Session["BatsmanName"] = batsmanName;
+            Response.Redirect("~/AnonUsers/BatsmanDetails");
         }
     }
 }
