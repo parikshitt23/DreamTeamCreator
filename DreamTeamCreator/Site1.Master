@@ -51,7 +51,7 @@
                     <ul class="nav navbar-nav">
                         <li><a runat="server" href="~/AnonUsers/Batsman">Batsman</a></li>
                         <li><a runat="server" href="~/AnonUsers/Bowlers">Bowlers</a></li>
-                        <li><a runat="server" href="~/Contact">Team</a></li>
+                        <li><a runat="server" href="~/AnonUsers/Team">Team</a></li>
                          <li><a runat="server" href="~/Leaderboard">Leaderboard</a></li>
                         <li><a runat="server" href="~/DreamTeamCreator">Dream Team</a></li>
                         <li><a runat="server" href="~/TeamOfTheWeek">Team of the Week</a></li>

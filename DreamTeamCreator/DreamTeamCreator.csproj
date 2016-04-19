@@ -121,9 +121,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AnonUsers\BatsmanDetails.aspx" />
     <Content Include="AnonUsers\BowlerDetails.aspx" />
     <Content Include="AnonUsers\Bowlers.aspx" />
     <Content Include="AnonUsers\Batsman.aspx" />
+    <Content Include="AnonUsers\Team.aspx" />
     <Content Include="DreamTeamCreator.aspx" />
     <Content Include="packages.config" />
     <Content Include="Site1.Master" />
@@ -184,6 +186,13 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnonUsers\BatsmanDetails.aspx.cs">
+      <DependentUpon>BatsmanDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AnonUsers\BatsmanDetails.aspx.designer.cs">
+      <DependentUpon>BatsmanDetails.aspx</DependentUpon>
+    </Compile>
     <Compile Include="AnonUsers\BowlerDetails.aspx.cs">
       <DependentUpon>BowlerDetails.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -204,6 +213,13 @@
     </Compile>
     <Compile Include="AnonUsers\Batsman.aspx.designer.cs">
       <DependentUpon>Batsman.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AnonUsers\Team.aspx.cs">
+      <DependentUpon>Team.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AnonUsers\Team.aspx.designer.cs">
+      <DependentUpon>Team.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />

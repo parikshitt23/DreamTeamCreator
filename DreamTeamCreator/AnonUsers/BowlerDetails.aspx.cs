@@ -54,6 +54,66 @@ namespace DreamTeamCreator.AnonUsers
                                 FoursLabel.Text = rdr.GetInt32(3).ToString();
                             }
                         }
+                        if (query == bowlerDetailsQueryMap["bowlerAllRecordsQuery"])
+                        {
+                            while (rdr.Read())
+                            {
+                                WicketsLabel2.Text = rdr.GetInt32(1).ToString();
+                                RunsConcededLabel2.Text = rdr.GetInt32(2).ToString();
+                                BallsBowledLabel.Text = rdr.GetInt32(3).ToString();
+                                AverageLabel.Text = rdr.GetFloat(4).ToString();
+                                StrikeRateLabel.Text = rdr.GetFloat(5).ToString();
+                                EconomyRateLabel.Text = rdr.GetFloat(6).ToString();
+
+                            }
+                        }
+                        if (query == bowlerDetailsQueryMap["bestBatsmanQuery"])
+                        {
+                            while (rdr.Read())
+                            {
+                                BestBatsmanLabel.Text = rdr.GetString(1);
+                                BestBatsmanWicketsLabel.Text = rdr.GetInt32(2).ToString();
+                                
+
+                            }
+                        }
+                        if (query == bowlerDetailsQueryMap["bowledWicketsQuery"])
+                        {
+                            while (rdr.Read())
+                            {
+
+                                BowledLabel.Text = rdr.GetInt32(1).ToString();
+
+
+                            }
+                        }
+                        if (query == bowlerDetailsQueryMap["inningFourConcededQuery"])
+                        {
+                            while (rdr.Read())
+                            {
+
+                                inningFourLabel.Text = rdr.GetInt32(4).ToString();
+
+
+                            }
+                        }
+                        if (query == bowlerDetailsQueryMap["inningSixConcededQuery"])
+                        {
+                            while (rdr.Read())
+                            {
+
+                                inningSixLabel.Text = rdr.GetInt32(4).ToString();
+
+
+                            }
+                        }
+                        //if (query == bowlerDetailsQueryMap["seasonBestQuery"])
+                        //{
+
+                        //    seasonWicketsLabel.Text = rdr.GetInt32(2).ToString();
+                        //}
+
+
                     }
                 }
             }
