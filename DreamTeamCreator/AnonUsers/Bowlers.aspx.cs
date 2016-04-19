@@ -95,7 +95,7 @@ namespace DreamTeamCreator.AnonUsers
 
                 if (check.Checked)
                 {
-                    BowlerNames.Add(row.Cells[3].Text);
+                    BowlerNames.Add(row.Cells[2].Text);
                 }
             }
             List<string> BowlerNames1 = BowlerNames;
@@ -105,7 +105,7 @@ namespace DreamTeamCreator.AnonUsers
         {
             Button viewDetailsButton = sender as Button;
             int rowIndex = Convert.ToInt32(viewDetailsButton.Attributes["RowIndex"]);
-            string bowlerName = BowlerSearchRes.Rows[rowIndex].Cells[3].Text;
+            string bowlerName = BowlerSearchRes.Rows[rowIndex].Cells[2].Text;
             Session["BowlerName"] = bowlerName;
             Response.Redirect("~/AnonUsers/BowlerDetails");
          } 
